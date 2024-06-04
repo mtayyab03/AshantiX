@@ -22,31 +22,29 @@ export default function TextTwoEnd({ title, subtitle }) {
     <View
       style={{
         flexDirection: "row",
-        marginVertical: RFPercentage(1.5),
+        justifyContent: "space-between",
+        marginTop: RFPercentage(0.5),
       }}
     >
-      <View style={{ width: "40%" }}>
-        <Text
-          style={{
-            fontFamily: FontFamily.medium,
-            fontSize: RFPercentage(1.7),
-            color: Colors.blacky,
-          }}
-        >
-          {title}
-        </Text>
-      </View>
-      <View style={{ width: RFPercentage(30) }}>
-        <Text
-          style={{
-            fontFamily: FontFamily.regular,
-            fontSize: RFPercentage(1.5),
-            color: Colors.blacky,
-          }}
-        >
-          {subtitle}
-        </Text>
-      </View>
+      <Text
+        style={{
+          fontFamily: FontFamily.regular,
+          fontSize: RFPercentage(1.7),
+          color: Colors.blacky,
+        }}
+      >
+        {title}
+      </Text>
+
+      <Text
+        style={{
+          fontFamily: FontFamily.medium,
+          fontSize: RFPercentage(1.7),
+          color: Colors.grey,
+        }}
+      >
+        {subtitle}
+      </Text>
     </View>
   );
 }

@@ -10,6 +10,10 @@ const arrowright = require("../../assets/images/arrowright.png");
 const bank = require("../../assets/images/bank.png");
 const crypto = require("../../assets/images/crytpo.png");
 const money = require("../../assets/images/money.png");
+const hoffor = require("../../assets/images/hoffor.png");
+const mastercard = require("../../assets/images/mastercard.png");
+const circletic = require("../../assets/images/circletic.png");
+const circlecross = require("../../assets/images/circlecross.png");
 
 export default {
   splash,
@@ -24,4 +28,8 @@ export default {
   bank,
   crypto,
   money,
+  mastercard,
+  hoffor,
+  circlecross,
+  circletic,
 };

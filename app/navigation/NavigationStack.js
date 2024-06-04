@@ -23,6 +23,10 @@ import AddCryptoRecepient from "../screens/AddCryptoRecepient";
 import AddMoneyRecepient from "../screens/AddMoneyRecepient";
 import ConfirmPayment from "../screens/ConfirmPayment";
 
+import SuccessScreen from "../screens/SuccessScreen";
+import FailScreen from "../screens/FailScreen";
+import QRScanScreen from "../screens/QRScanScreen";
+
 import BottomTab from "./BottomTab";
 
 const Stack = createStackNavigator();
@@ -53,6 +57,10 @@ export default function NavigationStack() {
       <Stack.Screen name="AddCryptoRecepient" component={AddCryptoRecepient} />
       <Stack.Screen name="AddMoneyRecepient" component={AddMoneyRecepient} />
       <Stack.Screen name="ConfirmPayment" component={ConfirmPayment} />
+
+      <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+      <Stack.Screen name="FailScreen" component={FailScreen} />
+      <Stack.Screen name="QRScanScreen" component={QRScanScreen} />
 
       <Stack.Screen name="BottomTab" component={BottomTab} />
     </Stack.Navigator>
