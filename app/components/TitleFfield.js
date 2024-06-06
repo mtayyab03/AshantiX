@@ -1,26 +1,39 @@
 import React, { useState } from "react";
-import {
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-} from "react-native";
-import { RFPercentage } from "react-native-responsive-fontsize";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { View, Text, TextInput, StyleSheet } from "react-native";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
+import icons from "../config/icons";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
-export default function TitleFfield({
+const TitleFfield = ({
   title,
   subtitle,
   keyboardType = "default",
-}) {
-  const [Name, onChangeName] = useState("");
+  value,
+  onChangeText,
+  validation,
+}) => {
+  const [error, setError] = useState("");
+
+  const handleValidation = () => {
+    if (validation) {
+      if (
+        !value ||
+        value.length < validation.minLength ||
+        value.length > validation.maxLength
+      ) {
+        setError(
+          `Please enter ${title.toLowerCase()} between ${
+            validation.minLength
+          } - ${validation.maxLength} characters`
+        );
+      } else {
+        setError("");
+      }
+    }
+  };
+
   return (
     <>
       <View style={{ width: "90%", justifyContent: "center" }}>
@@ -41,7 +54,7 @@ export default function TitleFfield({
           width: "90%",
           borderRadius: RFPercentage(1),
           borderWidth: RFPercentage(0.1),
-          borderColor: Colors.stroke,
+          borderColor: error ? Colors.red : Colors.stroke,
           height: RFPercentage(6.5),
           justifyContent: "center",
           padding: RFPercentage(2),
@@ -50,14 +63,26 @@ export default function TitleFfield({
         <View style={{ width: "90%", justifyContent: "center" }}>
           <TextInput
             style={{ width: RFPercentage(45), fontSize: RFPercentage(1.5) }}
-            onChangeText={onChangeName}
-            value={Name}
+            onChangeText={onChangeText}
+            value={value}
             placeholder={subtitle}
             placeholderTextColor={Colors.grey}
             keyboardType={keyboardType}
+            onBlur={handleValidation}
           />
         </View>
       </View>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
     </>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  error: {
+    color: Colors.red,
+    fontSize: RFPercentage(1.5),
+    marginTop: RFPercentage(0.5),
+  },
+});
+
+export default TitleFfield;

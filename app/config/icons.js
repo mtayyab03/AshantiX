@@ -14,6 +14,8 @@ const hoffor = require("../../assets/images/hoffor.png");
 const mastercard = require("../../assets/images/mastercard.png");
 const circletic = require("../../assets/images/circletic.png");
 const circlecross = require("../../assets/images/circlecross.png");
+const canada = require("../../assets/images/canada.png");
+const france = require("../../assets/images/france.png");
 
 export default {
   splash,
@@ -32,4 +34,6 @@ export default {
   hoffor,
   circlecross,
   circletic,
+  canada,
+  france,
 };
