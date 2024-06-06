@@ -7,6 +7,8 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
+import { Provider } from "react-redux";
+import store from "./app/redux/store";
 
 //navigation
 import NavigationStack from "./app/navigation/NavigationStack";
@@ -29,9 +31,11 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <NavigationStack />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <NavigationStack />
+        </NavigationContainer>
+      </Provider>
     );
   }
 }

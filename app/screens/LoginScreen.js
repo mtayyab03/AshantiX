@@ -7,15 +7,21 @@ import {
   View,
   Text,
   TextInput,
+  Button,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Formik } from "formik";
 import * as yup from "yup";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { Entypo, Fontisto } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 //Components
 import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
+import i18n from "../../i18n";
+
+// redux
+import { setLanguage } from "../redux/features/languageSlice";
 
 //config
 import Colors from "../config/Colors";
@@ -23,19 +29,99 @@ import { FontFamily } from "../config/font";
 import icons from "../config/icons";
 
 export default function LoginScreen(props) {
+  const dispatch = useDispatch();
+  const locale = useSelector((state) => state.language);
+  const [dropdown1, setDropdown1] = useState(false);
+  const [selectedTransferType1, setSelectedTransferType1] = useState(null);
   const [eyeIcon, setEyeIcon] = useState(false);
+  const transferLanguage = [
+    {
+      id: 1,
+      name: "English",
+      lang: "en",
+    },
+    {
+      id: 2,
+      name: "Franch",
+      lang: "fr",
+    },
+    {
+      id: 3,
+      name: "German",
+      lang: "de",
+    },
+    {
+      id: 4,
+      name: "Italian",
+      lang: "it",
+    },
+  ];
 
+  const handleLanguageChange = (language) => {
+    dispatch(setLanguage(language));
+    i18n.locale = language;
+  };
   let validationSchema = yup.object().shape({
     email: yup.string().required().email().label("Email"),
     password: yup.string().required().min(4).label("Password"),
   });
   return (
     <Screen style={styles.screen}>
+      <View
+        style={{
+          width: "90%",
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+      >
+        <View style={{ padding: RFPercentage(1) }}>
+          <View style={styles.dropdownToggle}>
+            <Text style={styles.buttonText}>
+              {selectedTransferType1 ? selectedTransferType1.name : "English"}
+            </Text>
+
+            {dropdown1 ? (
+              <TouchableOpacity onPress={() => setDropdown1(false)}>
+                <Entypo name="chevron-up" color={Colors.white} size={22} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => setDropdown1(true)}>
+                <Entypo name="chevron-down" color={Colors.white} size={22} />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {dropdown1 && (
+            <View style={styles.dropdown}>
+              {transferLanguage.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.dropdownItem}
+                  onPress={() => {
+                    handleLanguageChange(item.lang);
+                    setSelectedTransferType1(item);
+                    setDropdown1(false);
+                  }}
+                >
+                  <Text style={styles.dropdownText}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+      </View>
+      {/* <View style={{ flexDirection: "row" }}>
+        <Button title="English" onPress={() => handleLanguageChange("en")} />
+        <Button title="French" onPress={() => handleLanguageChange("fr")} />
+        <Button title="German" onPress={() => handleLanguageChange("de")} />
+        <Button title="Italian" onPress={() => handleLanguageChange("it")} />
+      </View> */}
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={icons.mainlogo} />
       </View>
 
       {/* login text */}
+
       <View style={{ width: "90%", marginTop: RFPercentage(5) }}>
         <Text
           style={{
@@ -44,7 +130,7 @@ export default function LoginScreen(props) {
             fontSize: RFPercentage(2.5),
           }}
         >
-          Login
+          {i18n.t("login")}
         </Text>
       </View>
 
@@ -247,5 +333,40 @@ const styles = StyleSheet.create({
     color: Colors.blacky,
     fontFamily: FontFamily.regular,
     fontSize: RFPercentage(1.4),
+  },
+  dropdownToggle: {
+    padding: RFPercentage(1),
+    borderRadius: RFPercentage(1),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.secondary,
+    flexDirection: "row",
+  },
+  dropdown: {
+    position: "relative",
+    zIndex: 1,
+    backgroundColor: Colors.fieldcolor,
+    width: "100%",
+    padding: RFPercentage(1),
+  },
+  dropdownItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: RFPercentage(1),
+  },
+  buttonText: {
+    color: Colors.white,
+    fontSize: RFPercentage(1.3),
+    fontFamily: FontFamily.semiBold,
+  },
+  dropdownIcon: {
+    width: RFPercentage(2),
+    height: RFPercentage(2),
+  },
+  dropdownText: {
+    marginLeft: RFPercentage(1),
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1),
+    color: Colors.grey,
   },
 });

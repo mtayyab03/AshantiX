@@ -9,6 +9,8 @@ import {
   TextInput,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import { useSelector } from "react-redux";
+import i18n from "../../i18n";
 
 //config
 import Colors from "../config/Colors";
@@ -22,8 +24,10 @@ import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
 import DoubleField from "../components/DoubleField";
 
-export default function LoginScreen(props) {
+export default function SignUpScreen(props) {
   const [Name, onChangeName] = useState("");
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
 
   return (
     <Screen style={styles.screen}>
@@ -46,7 +50,7 @@ export default function LoginScreen(props) {
             fontSize: RFPercentage(2.5),
           }}
         >
-          Signup
+          {i18n.t("signup")}
         </Text>
       </View>
 
