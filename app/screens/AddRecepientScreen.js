@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Image,
-  KeyboardAvoidingView,
   TouchableOpacity,
   StyleSheet,
   View,
@@ -10,17 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { Formik } from "formik";
-import {
-  FontAwesome5,
-  Octicons,
-  Fontisto,
-  AntDesign,
-  Feather,
-  MaterialCommunityIcons,
-  Entypo,
-  Ionicons,
-} from "@expo/vector-icons";
+
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 //config
@@ -29,16 +18,14 @@ import { FontFamily } from "../config/font";
 import icons from "../config/icons";
 
 //Components
-import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
-import TitleFfield from "../components/TitleFfield";
-import TitleFieldRO from "../components/TitleFieldRO";
 
 export default function AddRecepientScreen(props) {
   const navigation = useNavigation();
   const route = useRoute();
   const { transferType1, transferType2 } = route.params;
+
   const handleAddRecepient = () => {
     if (transferType2.name === "Bank") {
       navigation.navigate("AddBankRecepient", {
@@ -50,7 +37,7 @@ export default function AddRecepientScreen(props) {
         transferType1,
         transferType2,
       });
-    } else if (transferType2.name === "Money") {
+    } else if (transferType2.name === "Mobile") {
       navigation.navigate("AddMoneyRecepient", {
         transferType1,
         transferType2,
@@ -65,8 +52,8 @@ export default function AddRecepientScreen(props) {
       id: 1,
       profile: icons.profile,
       account: "344-454545-454",
-      name: "M Tayyab",
-      amount: "Bank",
+      name: "Isha Raj",
+      typeRecipient: "Bank",
       date: "05-04-2024",
     },
     {
@@ -74,23 +61,23 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "dwfwrt54t3t3gffffg3r5t35t",
       name: "Anna Watson",
-      amount: "Crpto",
+      typeRecipient: "Crypto",
       date: "03-04-2024",
     },
     {
       id: 3,
       profile: icons.profile,
-      name: "Wasif Ali",
+      name: "Jacqline",
       account: "344-454545-454",
-      amount: "Mobile Money",
+      typeRecipient: "Mobile",
       date: "05-05-2024",
     },
     {
       id: 4,
       profile: icons.profile,
-      name: "Hassan Gondal",
+      name: "Talyor Swift",
       account: "344-454545-454",
-      amount: "Bank",
+      typeRecipient: "Bank",
       date: "05-07-2024",
     },
     {
@@ -98,21 +85,26 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "dwfwrt54t3t3gffffg3r5t35t",
       name: "Elon Musk",
-      amount: "Crypto",
+      typeRecipient: "Crypto",
       date: "05-05-2024",
     },
     {
       id: 6,
       profile: icons.profile,
       account: "344-454545-454",
-      name: "Jeff Bezos",
-      amount: "Mobile Money",
+      name: "Aman ",
+      typeRecipient: "Mobile",
       date: "05-07-2024",
     },
   ];
-  const filteredTransactions = transactionHistory.filter((transaction) =>
-    transaction.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+  const filteredTransactions = transactionHistory.filter(
+    (transaction) =>
+      transaction.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      transaction.typeRecipient.toLowerCase() ===
+        transferType2.name.toLowerCase()
   );
+
   return (
     <View
       style={{
@@ -144,7 +136,10 @@ export default function AddRecepientScreen(props) {
             imageSource={icons.arrowleft}
             title="Add Recepient"
             onpress={() => {
-              props.navigation.navigate("HomeScreen");
+              props.navigation.navigate("ConvertScreen", {
+                transferType1,
+                transferType2,
+              });
             }}
             selectColor={Colors.white}
           />
@@ -172,7 +167,7 @@ export default function AddRecepientScreen(props) {
       <View style={styles.recentTransfersContainer}>
         <Text style={styles.recentTransfersText}>Saved Recipients</Text>
       </View>
-      {/* saved receipent */}
+      {/* saved recipient */}
       <ScrollView
         contentContainerStyle={{
           alignItems: "center",
@@ -246,7 +241,7 @@ export default function AddRecepientScreen(props) {
                   fontSize: RFPercentage(1.8),
                 }}
               >
-                {item.amount}
+                {item.typeRecipient}
               </Text>
               <Text
                 style={{
@@ -265,6 +260,7 @@ export default function AddRecepientScreen(props) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -290,15 +286,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: RFPercentage(2),
   },
-
   innermain: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-
   img: { width: RFPercentage(3), height: RFPercentage(3) },
-
   inputtext: {
     fontSize: RFPercentage(2),
     color: Colors.blacky,

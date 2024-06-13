@@ -23,7 +23,7 @@ import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
 import TitleFfield from "../components/TitleFfield";
 
-export default function AddMoneyRecepient(props) {
+export default function AddCardRecipient(props) {
   const route = useRoute();
   const { transferType1, transferType2 } = route.params;
   const [name, setName] = useState("");
@@ -161,8 +161,108 @@ export default function AddMoneyRecepient(props) {
         onChangeText={setEmail}
         validation={null} // No length validation, use regex for email validation
       />
+
       <View style={{ marginTop: RFPercentage(0.5) }} />
-      <TitleFfield title="Country" subtitle="e.g USA" keyboardType="default" />
+      <TitleFfield
+        title="Card Number"
+        subtitle="e.g 001-345-12312"
+        keyboardType="numeric"
+        value={cardNumber}
+        onChangeText={setCardNumber}
+      />
+
+      <View
+        style={{
+          width: "90%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ width: "50%", justifyContent: "center" }}>
+          <View style={{ width: "100%", justifyContent: "center" }}>
+            <Text
+              style={{
+                marginVertical: RFPercentage(1),
+                fontSize: RFPercentage(1.8),
+                color: Colors.blacky,
+                fontFamily: FontFamily.medium,
+              }}
+            >
+              Expiry date
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: "100%",
+              borderRadius: RFPercentage(1),
+              borderWidth: RFPercentage(0.1),
+              borderColor: Colors.stroke,
+              height: RFPercentage(6.5),
+              justifyContent: "center",
+              padding: RFPercentage(2),
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextInput
+                style={{ fontSize: RFPercentage(1.5) }}
+                value={expiryMonth}
+                onChangeText={(text) => {
+                  // Restrict input to two characters
+                  if (text.length <= 2) {
+                    setExpiryMonth(text);
+                    // Automatically move to year field when two characters are entered
+                    if (text.length === 2) {
+                      this.yearInput.focus();
+                    }
+                  }
+                }}
+                placeholder="MM"
+                keyboardType="numeric"
+              />
+              <Text style={{ fontSize: RFPercentage(1.5) }}>/</Text>
+              <TextInput
+                ref={(input) => {
+                  this.yearInput = input;
+                }} // Reference to year input
+                style={{ fontSize: RFPercentage(1.5) }}
+                value={expiryYear}
+                onChangeText={(text) => {
+                  // Restrict input to four characters
+                  if (text.length <= 4) {
+                    setExpiryYear(text);
+                  }
+                }}
+                placeholder="YYYY"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            width: "50%",
+            justifyContent: "center",
+            marginLeft: RFPercentage(1.7),
+          }}
+        >
+          <TitleFfield
+            title="CVC"
+            subtitle="e.g 303"
+            keyboardType="numeric"
+            value={cvc}
+            onChangeText={setCvc}
+            validation={{ minLength: 3, maxLength: 3 }}
+          />
+        </View>
+      </View>
+
       {/* button */}
       <TouchableOpacity
         style={styles.loginButton}

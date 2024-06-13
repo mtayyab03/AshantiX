@@ -10,17 +10,6 @@ import {
   ScrollView,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { Formik } from "formik";
-import {
-  FontAwesome5,
-  Octicons,
-  Fontisto,
-  AntDesign,
-  Feather,
-  MaterialCommunityIcons,
-  Entypo,
-  Ionicons,
-} from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 //config
@@ -32,9 +21,7 @@ import icons from "../config/icons";
 import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
-import TitleFfield from "../components/TitleFfield";
 import TextTwoEnd from "../components/TextTwoEnd";
-import AppLine from "../components/AppLine";
 
 export default function ConfirmPayment(props) {
   const route = useRoute();

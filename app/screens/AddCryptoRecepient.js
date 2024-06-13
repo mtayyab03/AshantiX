@@ -27,6 +27,8 @@ export default function AddCryptoRecepient(props) {
   const route = useRoute();
   const { transferType1, transferType2 } = route.params;
   const [name, setName] = useState("");
+  const [name2, setName2] = useState("");
+
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [cryptoAddress, setCryptoAddress] = useState("");
@@ -94,14 +96,36 @@ export default function AddCryptoRecepient(props) {
 
       {/* fields */}
       <View style={{ marginTop: RFPercentage(1.5) }} />
-      <TitleFfield
-        title="Name"
-        subtitle="e.g Jhones Snow"
-        keyboardType="default"
-        value={name}
-        onChangeText={setName}
-        validation={{ minLength: 1, maxLength: 50 }}
-      />
+      <View
+        style={{
+          width: "90%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: RFPercentage(0.5),
+          alignItems: "center",
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <TitleFfield
+            title="First Name"
+            subtitle="e.g Jhon"
+            keyboardType="default"
+            value={name2}
+            onChangeText={setName2}
+            validation={{ minLength: 1, maxLength: 50 }}
+          />
+        </View>
+        <View style={{ width: "50%", marginLeft: RFPercentage(2) }}>
+          <TitleFfield
+            title="Last Name"
+            subtitle="e.g Snow"
+            keyboardType="default"
+            value={name}
+            onChangeText={setName}
+            validation={{ minLength: 1, maxLength: 50 }}
+          />
+        </View>
+      </View>
 
       <View style={{ marginTop: RFPercentage(0.5) }} />
       <TitleFfield

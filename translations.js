@@ -14,7 +14,7 @@ const translations = {
     signup: "Registrieren",
     // Add more translations as needed
   },
-  it: {
+  sp: {
     login: "Accedi",
     signup: "Iscriviti",
     // Add more translations as needed

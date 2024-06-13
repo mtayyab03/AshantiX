@@ -37,7 +37,7 @@ export default function HomeScreen(props) {
     },
     {
       id: 3,
-      name: "Money",
+      name: "Mobile",
       eicon: icons.money,
     },
   ];

@@ -17,6 +17,8 @@ import AboutScreen from "../screens/AboutScreen";
 
 import ConvertScreen from "../screens/ConvertScreen";
 
+import AddSenderBank from "../screens/AddSenderBank";
+
 import AddRecepientScreen from "../screens/AddRecepientScreen";
 import AddBankRecepient from "../screens/AddBankRecepient";
 import AddCryptoRecepient from "../screens/AddCryptoRecepient";
@@ -62,6 +64,7 @@ export default function NavigationStack() {
       <Stack.Screen name="FailScreen" component={FailScreen} />
       <Stack.Screen name="QRScanScreen" component={QRScanScreen} />
 
+      <Stack.Screen name="AddSenderBank" component={AddSenderBank} />
       <Stack.Screen name="BottomTab" component={BottomTab} />
     </Stack.Navigator>
   );

@@ -52,8 +52,8 @@ export default function LoginScreen(props) {
     },
     {
       id: 4,
-      name: "Italian",
-      lang: "it",
+      name: "Spanish",
+      lang: "sp",
     },
   ];
 

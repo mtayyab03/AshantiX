@@ -32,7 +32,6 @@ import icons from "../config/icons";
 import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
-import TwoEndContainer from "../components/TwoEndContainer";
 
 export default function ConvertScreen({ route }) {
   const { transferType1, transferType2 } = route.params;
@@ -104,25 +103,43 @@ export default function ConvertScreen({ route }) {
       rate: "1$:0.92Euro",
     },
   ];
-  useEffect(() => {
-    if (amount1 && selectedTransferType1 && selectedTransferType2) {
-      handleConversion();
-    }
-  }, [amount1, selectedTransferType1, selectedTransferType2]);
-
-  const handleConversion = () => {
-    let convertedValue = parseFloat(amount1);
+  const handleConversion = (fromType, amount) => {
+    let convertedValue = parseFloat(amount);
     if (!isNaN(convertedValue)) {
-      if (
-        selectedTransferType1.name === "Bank" &&
-        selectedTransferType2.name === "Bank" &&
-        selectedTransferType3
-      ) {
-        convertedValue *= selectedTransferType3.rate;
+      if (selectedTransferType1 && selectedTransferType2) {
+        if (fromType === "amount1") {
+          if (
+            selectedTransferType1.name === "Bank" &&
+            selectedTransferType2.name === "Bank" &&
+            selectedTransferType3
+          ) {
+            convertedValue *= selectedTransferType3.rate;
+          }
+          // Add more conversion logic for different types if needed
+          setAmount2(convertedValue.toString());
+        } else if (fromType === "amount2") {
+          if (
+            selectedTransferType1.name === "Bank" &&
+            selectedTransferType2.name === "Bank" &&
+            selectedTransferType3
+          ) {
+            convertedValue /= selectedTransferType3.rate;
+          }
+          // Add more conversion logic for different types if needed
+          setAmount1(convertedValue.toString());
+        }
       }
-      // Add more conversion logic for different types if needed
-      setAmount2(convertedValue.toString());
     }
+  };
+
+  const handleAmount1Change = (value) => {
+    setAmount1(value);
+    handleConversion("amount1", value);
+  };
+
+  const handleAmount2Change = (value) => {
+    setAmount2(value);
+    handleConversion("amount2", value);
   };
 
   const handleNext = () => {
@@ -184,7 +201,7 @@ export default function ConvertScreen({ route }) {
         <Text style={styles.text}>
           {transferType1 ? transferType1.name : "Not Selected"}
         </Text>
-        <Text style={styles.text}>to</Text>
+        <Text style={styles.text}>To</Text>
         <Text style={styles.text}>
           {transferType2 ? transferType2.name : "Not Selected"}
         </Text>
@@ -192,213 +209,9 @@ export default function ConvertScreen({ route }) {
       {errorMessage ? (
         <Text style={styles.errorText}>{errorMessage}</Text>
       ) : null}
-      {/* coverter */}
-      <View style={styles.transferContainer}>
-        {/* First Dropdown */}
-        <View style={{ width: "45%" }}>
-          <View style={styles.dropdownToggle}>
-            <View
-              style={{
-                position: "absolute",
-                right: RFPercentage(2),
-                top: RFPercentage(0.5),
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  padding: RFPercentage(0.5),
-                  borderRadius: RFPercentage(0.5),
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: RFPercentage(0.5),
-                  backgroundColor: Colors.secondary,
-                  flexDirection: "row",
-                }}
-              >
-                <Text
-                  style={{
-                    color: Colors.white,
-                    fontSize: RFPercentage(1.5),
-                    fontFamily: FontFamily.semiBold,
-                  }}
-                >
-                  {selectedTransferType1
-                    ? selectedTransferType1.name
-                    : transferType1.name}
-                </Text>
-
-                {dropdown1 ? (
-                  <TouchableOpacity onPress={() => setDropdown1(false)}>
-                    <Entypo name="chevron-up" color={Colors.white} size={22} />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => setDropdown1(true)}>
-                    <Entypo
-                      name="chevron-down"
-                      color={Colors.white}
-                      size={22}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              {dropdown1 && (
-                <View style={styles.dropdown}>
-                  {transferType1.name === "Crypto"
-                    ? CryptoName.map((item) => (
-                        <TouchableOpacity
-                          key={item.id}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setSelectedTransferType1(item);
-                            setDropdown1(false);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{item.name}</Text>
-                        </TouchableOpacity>
-                      ))
-                    : bankCrpto.map((item) => (
-                        <TouchableOpacity
-                          key={item.id}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setSelectedTransferType1(item);
-                            setDropdown1(false);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{item.name}</Text>
-                        </TouchableOpacity>
-                      ))}
-                </View>
-              )}
-            </View>
-          </View>
-          <View
-            style={{
-              width: "90%",
-              position: "absolute",
-              bottom: RFPercentage(2),
-              left: RFPercentage(2),
-            }}
-          >
-            <TextInput
-              style={{ width: "90%", fontSize: RFPercentage(2.5) }}
-              keyboardType="numeric"
-              onChangeText={setAmount1}
-              value={amount1}
-              placeholder="$0.00"
-              placeholderTextColor={Colors.grey}
-            />
-          </View>
-        </View>
-
-        <View style={styles.swapIconContainer}>
-          <Fontisto name="arrow-swap" color={Colors.darkgrey} size={22} />
-        </View>
-
-        {/* Second Dropdown */}
-        <View style={{ width: "45%" }}>
-          <View style={styles.dropdownToggle}>
-            <View
-              style={{
-                position: "absolute",
-                right: RFPercentage(2),
-                top: RFPercentage(0.5),
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  padding: RFPercentage(0.5),
-                  borderRadius: RFPercentage(0.5),
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: RFPercentage(0.5),
-                  backgroundColor: Colors.secondary,
-                  flexDirection: "row",
-                }}
-              >
-                <Text
-                  style={{
-                    color: Colors.white,
-                    fontSize: RFPercentage(1.5),
-                    fontFamily: FontFamily.semiBold,
-                  }}
-                >
-                  {selectedTransferType2
-                    ? selectedTransferType2.name
-                    : transferType2.name}
-                </Text>
-
-                {dropdown2 ? (
-                  <TouchableOpacity onPress={() => setDropdown2(false)}>
-                    <Entypo name="chevron-up" color={Colors.white} size={22} />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => setDropdown2(true)}>
-                    <Entypo
-                      name="chevron-down"
-                      color={Colors.white}
-                      size={22}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              {dropdown2 && (
-                <View style={styles.dropdown}>
-                  {transferType2.name === "Crypto"
-                    ? CryptoName.map((item) => (
-                        <TouchableOpacity
-                          key={item.id}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setSelectedTransferType2(item);
-                            setDropdown2(false);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{item.name}</Text>
-                        </TouchableOpacity>
-                      ))
-                    : bankCrpto.map((item) => (
-                        <TouchableOpacity
-                          key={item.id}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setSelectedTransferType2(item);
-                            setDropdown2(false);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{item.name}</Text>
-                        </TouchableOpacity>
-                      ))}
-                </View>
-              )}
-            </View>
-          </View>
-          <View
-            style={{
-              width: "90%",
-              position: "absolute",
-              bottom: RFPercentage(2),
-              left: RFPercentage(2),
-            }}
-          >
-            <TextInput
-              style={{ width: "90%", fontSize: RFPercentage(2.5) }}
-              keyboardType="numeric"
-              onChangeText={setAmount2}
-              value={amount2}
-              placeholder="$0.00"
-              placeholderTextColor={Colors.grey}
-            />
-          </View>
-        </View>
-      </View>
 
       {/* bank dropdown */}
-      {transferType2.name === "Bank" ? (
+      {transferType2.name === "Bank" || transferType2.name === "Mobile" ? (
         <>
           <View
             style={{
@@ -439,7 +252,7 @@ export default function ConvertScreen({ route }) {
                 >
                   {selectedTransferType3
                     ? selectedTransferType3.name
-                    : "Pleae Select the rates"}
+                    : " Select Country"}
                 </Text>
                 <Text
                   style={{
@@ -554,6 +367,213 @@ export default function ConvertScreen({ route }) {
           ) : null}
         </>
       ) : null}
+
+      {/* coverter */}
+      <View style={styles.transferContainer}>
+        {/* First Dropdown */}
+        <View style={{ width: "45%" }}>
+          <View style={styles.dropdownToggle}>
+            <View
+              style={{
+                position: "absolute",
+                right: RFPercentage(2),
+                top: RFPercentage(0.5),
+              }}
+            >
+              <View
+                style={{
+                  width: "100%",
+                  padding: RFPercentage(0.5),
+                  borderRadius: RFPercentage(0.5),
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: RFPercentage(0.5),
+                  backgroundColor: Colors.secondary,
+                  flexDirection: "row",
+                }}
+              >
+                <Text
+                  style={{
+                    color: Colors.white,
+                    fontSize: RFPercentage(1.5),
+                    fontFamily: FontFamily.semiBold,
+                  }}
+                >
+                  {selectedTransferType1
+                    ? selectedTransferType1.name
+                    : transferType1.name}
+                </Text>
+
+                {dropdown1 ? (
+                  <TouchableOpacity onPress={() => setDropdown1(false)}>
+                    <Entypo name="chevron-up" color={Colors.white} size={22} />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setDropdown1(true)}>
+                    <Entypo
+                      name="chevron-down"
+                      color={Colors.white}
+                      size={22}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {dropdown1 && (
+                <View style={styles.dropdown}>
+                  {transferType1.name === "Crypto"
+                    ? CryptoName.map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setSelectedTransferType1(item);
+                            setDropdown1(false);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))
+                    : bankCrpto.map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setSelectedTransferType1(item);
+                            setDropdown1(false);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                </View>
+              )}
+            </View>
+          </View>
+          <View
+            style={{
+              width: "90%",
+              position: "absolute",
+              bottom: RFPercentage(2),
+              left: RFPercentage(2),
+            }}
+          >
+            <TextInput
+              style={{ width: "90%", fontSize: RFPercentage(2.5) }}
+              keyboardType="numeric"
+              value={amount1}
+              placeholder="$0.00"
+              placeholderTextColor={Colors.grey}
+              onChangeText={handleAmount1Change}
+            />
+          </View>
+        </View>
+
+        <View style={styles.swapIconContainer}>
+          <Fontisto name="arrow-swap" color={Colors.darkgrey} size={22} />
+        </View>
+
+        {/* Second Dropdown */}
+        <View style={{ width: "45%" }}>
+          <View style={styles.dropdownToggle}>
+            <View
+              style={{
+                position: "absolute",
+                right: RFPercentage(2),
+                top: RFPercentage(0.5),
+              }}
+            >
+              <View
+                style={{
+                  width: "100%",
+                  padding: RFPercentage(0.5),
+                  borderRadius: RFPercentage(0.5),
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: RFPercentage(0.5),
+                  backgroundColor: Colors.secondary,
+                  flexDirection: "row",
+                }}
+              >
+                <Text
+                  style={{
+                    color: Colors.white,
+                    fontSize: RFPercentage(1.5),
+                    fontFamily: FontFamily.semiBold,
+                  }}
+                >
+                  {selectedTransferType2
+                    ? selectedTransferType2.name
+                    : transferType2.name}
+                </Text>
+
+                {dropdown2 ? (
+                  <TouchableOpacity onPress={() => setDropdown2(false)}>
+                    <Entypo name="chevron-up" color={Colors.white} size={22} />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setDropdown2(true)}>
+                    <Entypo
+                      name="chevron-down"
+                      color={Colors.white}
+                      size={22}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {dropdown2 && (
+                <View style={styles.dropdown}>
+                  {transferType2.name === "Crypto"
+                    ? CryptoName.map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setSelectedTransferType2(item);
+                            setDropdown2(false);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))
+                    : bankCrpto.map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setSelectedTransferType2(item);
+                            setDropdown2(false);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                </View>
+              )}
+            </View>
+          </View>
+          <View
+            style={{
+              width: "90%",
+              position: "absolute",
+              bottom: RFPercentage(2),
+              left: RFPercentage(2),
+            }}
+          >
+            <TextInput
+              style={{ width: "90%", fontSize: RFPercentage(2.5) }}
+              keyboardType="numeric"
+              onChangeText={handleAmount2Change}
+              value={amount2}
+              placeholder="$0.00"
+              placeholderTextColor={Colors.grey}
+            />
+          </View>
+        </View>
+      </View>
+
+      {/* end bank dropdown country */}
       <TouchableOpacity style={styles.loginButton} onPress={handleNext}>
         <AppButton title="Next" buttonColor={Colors.primary} />
       </TouchableOpacity>
