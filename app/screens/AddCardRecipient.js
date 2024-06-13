@@ -58,10 +58,7 @@ export default function AddCardRecipient(props) {
       isValidCardNumber &&
       isValidCvc
     ) {
-      props.navigation.navigate("AddRecepientScreen", {
-        transferType1,
-        transferType2,
-      });
+      props.navigation.navigate("ConfirmPayment");
     } else {
       // Show error message or take appropriate action
       alert("Please fill in all fields correctly.");

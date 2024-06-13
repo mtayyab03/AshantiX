@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-
+import { useNavigation } from "@react-navigation/native";
+// redux
+import { useDispatch, useSelector } from "react-redux";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -23,9 +24,8 @@ import MainHeader from "../components/MainHeader";
 
 export default function AddRecepientScreen(props) {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { transferType1, transferType2 } = route.params;
-
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
   const handleAddRecepient = () => {
     if (transferType2.name === "Bank") {
       navigation.navigate("AddBankRecepient", {

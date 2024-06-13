@@ -16,7 +16,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import icons from "../config/icons";
-
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { setRecipientDetails } from "../redux/features/recipientSlice";
 //Components
 import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
@@ -24,44 +26,32 @@ import MainHeader from "../components/MainHeader";
 import TitleFfield from "../components/TitleFfield";
 
 export default function AddMoneyRecepient(props) {
-  const route = useRoute();
-  const { transferType1, transferType2 } = route.params;
+  const dispatch = useDispatch();
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
   const [name, setName] = useState("");
   const [name2, setName2] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cvc, setCvc] = useState("");
-  const [expiryMonth, setExpiryMonth] = useState("");
-  const [expiryYear, setExpiryYear] = useState("");
 
   const isValidName = name.trim().length > 0 && name.trim().length <= 50;
+  const isValidLastName = name.trim().length > 0 && name.trim().length <= 50;
   const isValidPhone =
     phone.trim().length >= 13 &&
     phone.trim().length <= 50 &&
     /^\+?[1-9]\d{1,14}$/.test(phone);
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isValidCardNumber =
-    cardNumber.trim().length > 0 && cardNumber.trim().length <= 19;
-  const isValidCvc = cvc.trim().length === 3;
-  const isValidExpiryMonth =
-    expiryMonth.trim().length === 2 &&
-    /^(0[1-9]|1[0-2])$/.test(expiryMonth.trim());
-  const isValidExpiryYear =
-    expiryYear.trim().length === 4 && /^(20\d{2})$/.test(expiryYear.trim());
 
   const handleConfirm = () => {
-    if (
-      isValidName &&
-      isValidPhone &&
-      isValidEmail &&
-      isValidCardNumber &&
-      isValidCvc
-    ) {
-      props.navigation.navigate("AddRecepientScreen", {
-        transferType1,
-        transferType2,
-      });
+    if (isValidName && isValidLastName && isValidPhone && isValidEmail) {
+      const recipientDetails = {
+        firstName: name,
+        lastName: name2,
+        phone: phone,
+        email: email,
+      };
+      dispatch(setRecipientDetails(recipientDetails));
+      props.navigation.navigate("ConfirmPayment");
     } else {
       // Show error message or take appropriate action
       alert("Please fill in all fields correctly.");

@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { setRecipientDetails } from "../redux/features/recipientSlice";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -24,16 +26,18 @@ import MainHeader from "../components/MainHeader";
 import TitleFfield from "../components/TitleFfield";
 
 export default function AddCryptoRecepient(props) {
-  const route = useRoute();
-  const { transferType1, transferType2 } = route.params;
+  const dispatch = useDispatch();
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
   const [name, setName] = useState("");
-  const [name2, setName2] = useState("");
+  const [lastName, setName2] = useState("");
 
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [cryptoAddress, setCryptoAddress] = useState("");
 
   const isValidName = name.length > 0 && name.length <= 50;
+  const isValidLastName = name.length > 0 && name.length <= 50;
   const isValidPhone = phone.length >= 13 && phone.length <= 50;
   // You can use a library like validator.js for email validation
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -41,12 +45,22 @@ export default function AddCryptoRecepient(props) {
     cryptoAddress.length >= 20 && cryptoAddress.length <= 90;
 
   const handleConfirm = () => {
-    if (isValidName && isValidPhone && isValidEmail && isValidCryptoAddress) {
-      // Navigate or perform further actions
-      props.navigation.navigate("AddRecepientScreen", {
-        transferType1,
-        transferType2,
-      });
+    if (
+      isValidName &&
+      isValidPhone &&
+      isValidLastName &&
+      isValidEmail &&
+      isValidCryptoAddress
+    ) {
+      const recipientDetails = {
+        firstName: name,
+        lastName: lastName,
+        phone: phone,
+        email: email,
+        cryptoAddress: cryptoAddress,
+      };
+      dispatch(setRecipientDetails(recipientDetails));
+      props.navigation.navigate("ConfirmPayment");
     } else {
       // Show error messages or take appropriate action234
       alert("Please fill in all fields correctly.");
@@ -110,8 +124,8 @@ export default function AddCryptoRecepient(props) {
             title="First Name"
             subtitle="e.g Jhon"
             keyboardType="default"
-            value={name2}
-            onChangeText={setName2}
+            value={name}
+            onChangeText={setName}
             validation={{ minLength: 1, maxLength: 50 }}
           />
         </View>
@@ -120,8 +134,8 @@ export default function AddCryptoRecepient(props) {
             title="Last Name"
             subtitle="e.g Snow"
             keyboardType="default"
-            value={name}
-            onChangeText={setName}
+            value={lastName}
+            onChangeText={setName2}
             validation={{ minLength: 1, maxLength: 50 }}
           />
         </View>

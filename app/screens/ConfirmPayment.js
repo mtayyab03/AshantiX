@@ -1,31 +1,54 @@
-import React, { useState } from "react";
-import {
-  Image,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-} from "react-native";
+import React, { useEffect } from "react";
+import { Image, TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import icons from "../config/icons";
 
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { selectBankDetails } from "../redux/features/bankDetailsSlice";
+
 //Components
-import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
 import TextTwoEnd from "../components/TextTwoEnd";
 
 export default function ConfirmPayment(props) {
-  const route = useRoute();
-  const { transferType1, transferType2 } = route.params;
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const bankDetails = useSelector(selectBankDetails) || [];
+  const recipientDetails = useSelector(
+    (state) => state.recipient.recipientDetails
+  );
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
+  const selectedTransferType1 = useSelector(
+    (state) => state.transfer.selectedTransferType1
+  );
+  const selectedTransferType2 = useSelector(
+    (state) => state.transfer.selectedTransferType2
+  );
+  const amount1 = useSelector((state) => state.transfer.amount1);
+  const amount2 = useSelector((state) => state.transfer.amount2);
+  useEffect(() => {
+    const reduxState = {
+      bankDetails,
+      recipientDetails,
+      transferType1,
+      transferType2,
+      selectedTransferType1,
+      selectedTransferType2,
+      amount1,
+      amount2,
+    };
+
+    console.log("Redux State:", reduxState);
+  }, []); // Empty dependency array ensures this effect runs only once, on mount
+
   return (
     <View
       style={{
@@ -57,10 +80,7 @@ export default function ConfirmPayment(props) {
             imageSource={icons.arrowleft}
             title="Confirm Payment"
             onpress={() => {
-              props.navigation.navigate("AddRecepientScreen", {
-                transferType1,
-                transferType2,
-              });
+              navigation.goBack();
             }}
             selectColor={Colors.white}
           />

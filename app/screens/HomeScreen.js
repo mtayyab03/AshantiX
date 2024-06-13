@@ -10,6 +10,13 @@ import {
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Entypo, Fontisto } from "@expo/vector-icons";
 
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setTransferType1,
+  setTransferType2,
+} from "../redux/features/transferSlice";
+
 // Config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -21,8 +28,9 @@ import AppButton from "../components/AppButton";
 export default function HomeScreen(props) {
   const [dropdown1, setDropdown1] = useState(false);
   const [dropdown2, setDropdown2] = useState(false);
-  const [selectedTransferType1, setSelectedTransferType1] = useState(null);
-  const [selectedTransferType2, setSelectedTransferType2] = useState(null);
+  const dispatch = useDispatch();
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
   const [errorMessage, setErrorMessage] = useState("");
   const transferType = [
     {
@@ -80,13 +88,13 @@ export default function HomeScreen(props) {
     },
   ];
   const handleNext = () => {
-    if (!selectedTransferType1 || !selectedTransferType2) {
+    if (!transferType1 || !transferType2) {
       setErrorMessage("Please select both transfer types.");
     } else {
       setErrorMessage("");
       props.navigation.navigate("ConvertScreen", {
-        transferType1: selectedTransferType1,
-        transferType2: selectedTransferType2,
+        transferType1: transferType1,
+        transferType2: transferType2,
       });
     }
   };
@@ -107,9 +115,7 @@ export default function HomeScreen(props) {
         <View style={{ width: "45%" }}>
           <View style={styles.dropdownToggle}>
             <Text style={styles.buttonText}>
-              {selectedTransferType1
-                ? selectedTransferType1.name
-                : "Transfer Type"}
+              {transferType1 ? transferType1.name : "Transfer Type"}
             </Text>
 
             {dropdown1 ? (
@@ -130,7 +136,7 @@ export default function HomeScreen(props) {
                   key={item.id}
                   style={styles.dropdownItem}
                   onPress={() => {
-                    setSelectedTransferType1(item);
+                    dispatch(setTransferType1(item));
                     setDropdown1(false);
                   }}
                 >
@@ -150,9 +156,7 @@ export default function HomeScreen(props) {
         <View style={{ width: "45%" }}>
           <View style={styles.dropdownToggle}>
             <Text style={styles.buttonText}>
-              {selectedTransferType2
-                ? selectedTransferType2.name
-                : "Transfer Type"}
+              {transferType2 ? transferType2.name : "Transfer Type"}
             </Text>
 
             {dropdown2 ? (
@@ -173,7 +177,7 @@ export default function HomeScreen(props) {
                   key={item.id}
                   style={styles.dropdownItem}
                   onPress={() => {
-                    setSelectedTransferType2(item);
+                    dispatch(setTransferType2(item));
                     setDropdown2(false);
                   }}
                 >

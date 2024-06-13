@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -11,40 +11,46 @@ import {
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
+import { Fontisto, Entypo } from "@expo/vector-icons";
+// redux
+import { useDispatch, useSelector } from "react-redux";
 import {
-  FontAwesome5,
-  Octicons,
-  Fontisto,
-  AntDesign,
-  Feather,
-  MaterialCommunityIcons,
-  Entypo,
-  Ionicons,
-} from "@expo/vector-icons";
-
+  setTransferType1,
+  setTransferType2,
+  setSelectedTransferType1,
+  setSelectedTransferType2,
+  setAmount1,
+  setAmount2,
+} from "../redux/features/transferSlice";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import icons from "../config/icons";
 
 //Components
-import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
 
-export default function ConvertScreen({ route }) {
-  const { transferType1, transferType2 } = route.params;
+export default function ConvertScreen() {
+  const dispatch = useDispatch();
+  const transferType1 = useSelector((state) => state.transfer.transferType1);
+  const transferType2 = useSelector((state) => state.transfer.transferType2);
+  const selectedTransferType1 = useSelector(
+    (state) => state.transfer.selectedTransferType1
+  );
+  const selectedTransferType2 = useSelector(
+    (state) => state.transfer.selectedTransferType2
+  );
+  const amount1 = useSelector((state) => state.transfer.amount1);
+  const amount2 = useSelector((state) => state.transfer.amount2);
   const navigation = useNavigation();
   const [dropdown1, setDropdown1] = useState(false);
   const [dropdown2, setDropdown2] = useState(false);
   const [dropdown3, setDropdown3] = useState(false);
 
-  const [selectedTransferType1, setSelectedTransferType1] = useState(null);
-  const [selectedTransferType2, setSelectedTransferType2] = useState(null);
   const [selectedTransferType3, setSelectedTransferType3] = useState(null);
-  const [amount1, setAmount1] = useState("");
-  const [amount2, setAmount2] = useState("");
+  // const [amount1, setAmount1] = useState("");
+  // const [amount2, setAmount2] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const bankCrpto = [
@@ -108,6 +114,7 @@ export default function ConvertScreen({ route }) {
     if (!isNaN(convertedValue)) {
       if (selectedTransferType1 && selectedTransferType2) {
         if (fromType === "amount1") {
+          // Handle conversion logic for amount1
           if (
             selectedTransferType1.name === "Bank" &&
             selectedTransferType2.name === "Bank" &&
@@ -115,9 +122,10 @@ export default function ConvertScreen({ route }) {
           ) {
             convertedValue *= selectedTransferType3.rate;
           }
-          // Add more conversion logic for different types if needed
           setAmount2(convertedValue.toString());
+          dispatch(setAmount1(amount)); // Dispatch amount1 to Redux
         } else if (fromType === "amount2") {
+          // Handle conversion logic for amount2
           if (
             selectedTransferType1.name === "Bank" &&
             selectedTransferType2.name === "Bank" &&
@@ -125,21 +133,32 @@ export default function ConvertScreen({ route }) {
           ) {
             convertedValue /= selectedTransferType3.rate;
           }
-          // Add more conversion logic for different types if needed
           setAmount1(convertedValue.toString());
+          dispatch(setAmount2(amount)); // Dispatch amount2 to Redux
         }
       }
     }
   };
 
+  // Function to handle amount1 change
   const handleAmount1Change = (value) => {
     setAmount1(value);
     handleConversion("amount1", value);
   };
 
+  // Function to handle amount2 change
   const handleAmount2Change = (value) => {
     setAmount2(value);
     handleConversion("amount2", value);
+  };
+  // Function to handle selected transfer type 1 change
+  const handleSelectedTransferType1 = (type) => {
+    dispatch(setSelectedTransferType1(type));
+  };
+
+  // Function to handle selected transfer type 2 change
+  const handleSelectedTransferType2 = (type) => {
+    dispatch(setSelectedTransferType2(type));
   };
 
   const handleNext = () => {
@@ -427,7 +446,7 @@ export default function ConvertScreen({ route }) {
                           key={item.id}
                           style={styles.dropdownItem}
                           onPress={() => {
-                            setSelectedTransferType1(item);
+                            handleSelectedTransferType1(item);
                             setDropdown1(false);
                           }}
                         >
@@ -439,7 +458,7 @@ export default function ConvertScreen({ route }) {
                           key={item.id}
                           style={styles.dropdownItem}
                           onPress={() => {
-                            setSelectedTransferType1(item);
+                            handleSelectedTransferType1(item);
                             setDropdown1(false);
                           }}
                         >
@@ -530,7 +549,7 @@ export default function ConvertScreen({ route }) {
                           key={item.id}
                           style={styles.dropdownItem}
                           onPress={() => {
-                            setSelectedTransferType2(item);
+                            handleSelectedTransferType2(item);
                             setDropdown2(false);
                           }}
                         >
@@ -542,7 +561,7 @@ export default function ConvertScreen({ route }) {
                           key={item.id}
                           style={styles.dropdownItem}
                           onPress={() => {
-                            setSelectedTransferType2(item);
+                            handleSelectedTransferType2(item);
                             setDropdown2(false);
                           }}
                         >
