@@ -12,6 +12,7 @@ import { Entypo, Fontisto } from "@expo/vector-icons";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
+import i18n from "../../i18n";
 import {
   setTransferType1,
   setTransferType2,
@@ -32,20 +33,22 @@ export default function HomeScreen(props) {
   const transferType1 = useSelector((state) => state.transfer.transferType1);
   const transferType2 = useSelector((state) => state.transfer.transferType2);
   const [errorMessage, setErrorMessage] = useState("");
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
   const transferType = [
     {
       id: 1,
-      name: "Bank",
+      name: i18n.t("bank"),
       eicon: icons.bank,
     },
     {
       id: 2,
-      name: "Crypto",
+      name: i18n.t("crypto"),
       eicon: icons.crypto,
     },
     {
       id: 3,
-      name: "Mobile",
+      name: i18n.t("mobile"),
       eicon: icons.money,
     },
   ];
@@ -103,7 +106,7 @@ export default function HomeScreen(props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerContent}>
-          <Text style={styles.headerText}>Home</Text>
+          <Text style={styles.headerText}>{i18n.t("home")}</Text>
         </View>
       </View>
       {errorMessage ? (
@@ -115,7 +118,7 @@ export default function HomeScreen(props) {
         <View style={{ width: "45%" }}>
           <View style={styles.dropdownToggle}>
             <Text style={styles.buttonText}>
-              {transferType1 ? transferType1.name : "Transfer Type"}
+              {transferType1 ? transferType1.name : i18n.t("transfer_type")}
             </Text>
 
             {dropdown1 ? (
@@ -156,7 +159,7 @@ export default function HomeScreen(props) {
         <View style={{ width: "45%" }}>
           <View style={styles.dropdownToggle}>
             <Text style={styles.buttonText}>
-              {transferType2 ? transferType2.name : "Transfer Type"}
+              {transferType2 ? transferType2.name : i18n.t("transfer_type")}
             </Text>
 
             {dropdown2 ? (
@@ -191,11 +194,13 @@ export default function HomeScreen(props) {
       </View>
 
       <TouchableOpacity style={styles.loginButton} onPress={handleNext}>
-        <AppButton title="Next" buttonColor={Colors.primary} />
+        <AppButton title={i18n.t("next")} buttonColor={Colors.primary} />
       </TouchableOpacity>
 
       <View style={styles.recentTransfersContainer}>
-        <Text style={styles.recentTransfersText}>Recent Transfers</Text>
+        <Text style={styles.recentTransfersText}>
+          {i18n.t("recent_transfer")}
+        </Text>
       </View>
 
       {/* history */}

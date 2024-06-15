@@ -22,21 +22,21 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import i18n from "../../i18n";
+
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import icons from "../config/icons";
 
 //Components
-import Screen from "../components/Screen";
-import AppButton from "../components/AppButton";
-import InputField from "../components/InputField";
-import PasswordField from "../components/PasswordField";
-import DoubleField from "../components/DoubleField";
 import AppLine from "../components/AppLine";
-import IconTitle from "../components/IconTitle";
 
 export default function Profilescreen(props) {
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
   return (
     <View
       style={{
@@ -130,7 +130,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            Account
+            {i18n.t("account")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -157,7 +157,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            Transfer History
+            {i18n.t("transfer_history")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -185,7 +185,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            Setting
+            {i18n.t("setting")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -213,7 +213,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            Support
+            {i18n.t("support")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -241,7 +241,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            About
+            {i18n.t("about")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -269,7 +269,7 @@ export default function Profilescreen(props) {
               fontSize: RFPercentage(1.8),
             }}
           >
-            Logout
+            {i18n.t("logout")}
           </Text>
         </View>
       </TouchableOpacity>

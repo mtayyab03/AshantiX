@@ -152,7 +152,7 @@ export default function LoginScreen(props) {
                   onChangeText={handleChange("email")}
                   onBlur={() => setFieldTouched("email")}
                   // value={text}
-                  placeholder="User Name or Email"
+                  placeholder={i18n.t("email")}
                   placeholderTextColor={Colors.placeholder}
                 />
               </View>
@@ -168,7 +168,7 @@ export default function LoginScreen(props) {
                   onChangeText={handleChange("password")}
                   onBlur={() => setFieldTouched("password")}
                   // value={Password}
-                  placeholder="Password"
+                  placeholder={i18n.t("password")}
                   placeholderTextColor={Colors.placeholder}
                   secureTextEntry={true && !eyeIcon}
                 />
@@ -201,7 +201,9 @@ export default function LoginScreen(props) {
                 activeOpacity={0.7}
                 style={styles.forgotPasswordButton}
               >
-                <Text style={styles.forgotPasswordText}>Forget Password ?</Text>
+                <Text style={styles.forgotPasswordText}>
+                  {i18n.t("forget_password")}
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -210,7 +212,7 @@ export default function LoginScreen(props) {
               activeOpacity={0.7}
               onPress={handleSubmit}
             >
-              <AppButton title="Login" buttonColor={Colors.primary} />
+              <AppButton title={i18n.t("login")} buttonColor={Colors.primary} />
             </TouchableOpacity>
           </>
         )}
@@ -232,7 +234,7 @@ export default function LoginScreen(props) {
             fontSize: RFPercentage(1.5),
           }}
         >
-          Don’t have an account ?
+          {i18n.t("dont_account")} ?
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -247,7 +249,7 @@ export default function LoginScreen(props) {
               fontSize: RFPercentage(1.5),
             }}
           >
-            SIGN UP
+            {i18n.t("signup")}
           </Text>
         </TouchableOpacity>
       </View>

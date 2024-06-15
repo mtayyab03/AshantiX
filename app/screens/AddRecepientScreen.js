@@ -13,6 +13,7 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
 // redux
 import { useDispatch, useSelector } from "react-redux";
+import i18n from "../../i18n";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -26,18 +27,20 @@ export default function AddRecepientScreen(props) {
   const navigation = useNavigation();
   const transferType1 = useSelector((state) => state.transfer.transferType1);
   const transferType2 = useSelector((state) => state.transfer.transferType2);
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
   const handleAddRecepient = () => {
-    if (transferType2.name === "Bank") {
+    if (transferType2.name === i18n.t("bank")) {
       navigation.navigate("AddBankRecepient", {
         transferType1,
         transferType2,
       });
-    } else if (transferType2.name === "Crypto") {
+    } else if (transferType2.name === i18n.t("crypto")) {
       navigation.navigate("AddCryptoRecepient", {
         transferType1,
         transferType2,
       });
-    } else if (transferType2.name === "Mobile") {
+    } else if (transferType2.name === i18n.t("mobile")) {
       navigation.navigate("AddMoneyRecepient", {
         transferType1,
         transferType2,
@@ -53,7 +56,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "344-454545-454",
       name: "Isha Raj",
-      typeRecipient: "Bank",
+      typeRecipient: i18n.t("bank"),
       date: "05-04-2024",
     },
     {
@@ -61,7 +64,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "dwfwrt54t3t3gffffg3r5t35t",
       name: "Anna Watson",
-      typeRecipient: "Crypto",
+      typeRecipient: i18n.t("crypto"),
       date: "03-04-2024",
     },
     {
@@ -69,7 +72,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       name: "Jacqline",
       account: "344-454545-454",
-      typeRecipient: "Mobile",
+      typeRecipient: i18n.t("mobile"),
       date: "05-05-2024",
     },
     {
@@ -77,7 +80,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       name: "Talyor Swift",
       account: "344-454545-454",
-      typeRecipient: "Bank",
+      typeRecipient: i18n.t("bank"),
       date: "05-07-2024",
     },
     {
@@ -85,7 +88,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "dwfwrt54t3t3gffffg3r5t35t",
       name: "Elon Musk",
-      typeRecipient: "Crypto",
+      typeRecipient: i18n.t("crypto"),
       date: "05-05-2024",
     },
     {
@@ -93,7 +96,7 @@ export default function AddRecepientScreen(props) {
       profile: icons.profile,
       account: "344-454545-454",
       name: "Aman ",
-      typeRecipient: "Mobile",
+      typeRecipient: i18n.t("mobile"),
       date: "05-07-2024",
     },
   ];
@@ -134,7 +137,7 @@ export default function AddRecepientScreen(props) {
         >
           <MainHeader
             imageSource={icons.arrowleft}
-            title="Add Recepient"
+            title={i18n.t("add_recipient")}
             onpress={() => {
               props.navigation.navigate("ConvertScreen", {
                 transferType1,
@@ -148,7 +151,10 @@ export default function AddRecepientScreen(props) {
 
       {/* button */}
       <TouchableOpacity style={styles.loginButton} onPress={handleAddRecepient}>
-        <AppButton title="Add Recepient" buttonColor={Colors.secondary} />
+        <AppButton
+          title={i18n.t("add_recipient")}
+          buttonColor={Colors.secondary}
+        />
       </TouchableOpacity>
 
       {/* search field */}
@@ -158,14 +164,16 @@ export default function AddRecepientScreen(props) {
             style={styles.inputtext}
             onChangeText={setSearchQuery}
             value={searchQuery}
-            placeholder="Search"
+            placeholder={i18n.t("search")}
             placeholderTextColor={Colors.grey}
           />
           <Image style={styles.img} source={icons.search} />
         </View>
       </View>
       <View style={styles.recentTransfersContainer}>
-        <Text style={styles.recentTransfersText}>Saved Recipients</Text>
+        <Text style={styles.recentTransfersText}>
+          {i18n.t("saved_recipient")}
+        </Text>
       </View>
       {/* saved recipient */}
       <ScrollView

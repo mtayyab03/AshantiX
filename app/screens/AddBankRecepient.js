@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, View, ScrollView } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { useNavigation, useRoute } from "@react-navigation/native";
 
 //config
 import Colors from "../config/Colors";
@@ -9,6 +8,7 @@ import icons from "../config/icons";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { setRecipientDetails } from "../redux/features/recipientSlice";
+import i18n from "../../i18n";
 
 //Components
 import AppButton from "../components/AppButton";
@@ -19,7 +19,8 @@ export default function AddBankRecepient(props) {
   const dispatch = useDispatch();
   const transferType1 = useSelector((state) => state.transfer.transferType1);
   const transferType2 = useSelector((state) => state.transfer.transferType2);
-
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -113,7 +114,7 @@ export default function AddBankRecepient(props) {
         >
           <View style={{ width: "50%" }}>
             <TitleFfield
-              title="First Name"
+              title={i18n.t("name")}
               subtitle="e.g Jhon"
               keyboardType="default"
               value={firstName}
@@ -133,7 +134,7 @@ export default function AddBankRecepient(props) {
 
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="Phone Number"
+          title={i18n.t("phone_number")}
           subtitle="e.g 001-345-12312"
           keyboardType="numeric"
           value={phoneNumber}
@@ -142,7 +143,7 @@ export default function AddBankRecepient(props) {
 
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="Bank Name "
+          title={i18n.t("bank_name")}
           subtitle="e.g Capital one"
           keyboardType="default"
           value={bankName}
@@ -150,7 +151,7 @@ export default function AddBankRecepient(props) {
         />
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="Account Number"
+          title={i18n.t("account_number")}
           subtitle="e.g 001-345-12312"
           keyboardType="numeric"
           value={accountNumber}
@@ -158,7 +159,7 @@ export default function AddBankRecepient(props) {
         />
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="Routing Number"
+          title={i18n.t("routing_number")}
           subtitle="e.g 1111-111-11-111"
           keyboardType="numeric"
           value={routingNumber}
@@ -166,7 +167,7 @@ export default function AddBankRecepient(props) {
         />
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="BIC"
+          title={i18n.t("bic")}
           subtitle="e.g 000-000-00-220-11"
           keyboardType="numeric"
           value={bic}
@@ -174,7 +175,7 @@ export default function AddBankRecepient(props) {
         />
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="IBAN"
+          title={i18n.t("iban")}
           subtitle="e.g US01UNIL222233434"
           keyboardType="default"
           value={iban}
@@ -182,7 +183,7 @@ export default function AddBankRecepient(props) {
         />
         <View style={{ marginTop: RFPercentage(0.5) }} />
         <TitleFfield
-          title="Address"
+          title={i18n.t("address")}
           subtitle="e.g street no 3, Amilio, Washington D.C, USA"
           keyboardType="default"
           value={address}
@@ -201,7 +202,7 @@ export default function AddBankRecepient(props) {
         >
           <View style={{ width: "55%" }}>
             <TitleFfield
-              title="State"
+              title={i18n.t("state")}
               subtitle="e.g Texas"
               keyboardType="default"
               value={state}
@@ -210,7 +211,7 @@ export default function AddBankRecepient(props) {
           </View>
           <View style={{ width: "45%", marginLeft: RFPercentage(1) }}>
             <TitleFfield
-              title="Zipcode"
+              title={i18n.t("zipcode")}
               subtitle="e.g 100984"
               keyboardType="numeric"
               value={zipcode}
@@ -231,7 +232,7 @@ export default function AddBankRecepient(props) {
         >
           <View style={{ width: "45%" }}>
             <TitleFfield
-              title="City"
+              title={i18n.t("city")}
               subtitle="e.g Illonois"
               keyboardType="default"
               value={city}
@@ -240,7 +241,7 @@ export default function AddBankRecepient(props) {
           </View>
           <View style={{ width: "55%", marginLeft: RFPercentage(1) }}>
             <TitleFfield
-              title="Country"
+              title={i18n.t("country")}
               subtitle="e.g USA"
               keyboardType="default"
               value={country}
@@ -255,7 +256,7 @@ export default function AddBankRecepient(props) {
           activeOpacity={0.7}
           onPress={handleConfirm}
         >
-          <AppButton title="Confirm" buttonColor={Colors.secondary} />
+          <AppButton title={i18n.t("confirm")} buttonColor={Colors.secondary} />
         </TouchableOpacity>
       </ScrollView>
     </View>

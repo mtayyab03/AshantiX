@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Fontisto, Entypo } from "@expo/vector-icons";
 // redux
 import { useDispatch, useSelector } from "react-redux";
+import i18n from "../../i18n";
 import {
   setTransferType1,
   setTransferType2,
@@ -32,6 +33,8 @@ import AppButton from "../components/AppButton";
 import MainHeader from "../components/MainHeader";
 
 export default function ConvertScreen() {
+  const locale = useSelector((state) => state.language);
+  i18n.locale = locale;
   const dispatch = useDispatch();
   const transferType1 = useSelector((state) => state.transfer.transferType1);
   const transferType2 = useSelector((state) => state.transfer.transferType2);
@@ -41,16 +44,16 @@ export default function ConvertScreen() {
   const selectedTransferType2 = useSelector(
     (state) => state.transfer.selectedTransferType2
   );
-  const amount1 = useSelector((state) => state.transfer.amount1);
-  const amount2 = useSelector((state) => state.transfer.amount2);
+  // const amount1 = useSelector((state) => state.transfer.amount1);
+  // const amount2 = useSelector((state) => state.transfer.amount2);
   const navigation = useNavigation();
   const [dropdown1, setDropdown1] = useState(false);
   const [dropdown2, setDropdown2] = useState(false);
   const [dropdown3, setDropdown3] = useState(false);
 
   const [selectedTransferType3, setSelectedTransferType3] = useState(null);
-  // const [amount1, setAmount1] = useState("");
-  // const [amount2, setAmount2] = useState("");
+  const [amount1, setAmount1] = useState("");
+  const [amount2, setAmount2] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const bankCrpto = [
@@ -116,25 +119,25 @@ export default function ConvertScreen() {
         if (fromType === "amount1") {
           // Handle conversion logic for amount1
           if (
-            selectedTransferType1.name === "Bank" &&
-            selectedTransferType2.name === "Bank" &&
+            selectedTransferType1.name === i18n.t("bank") &&
+            selectedTransferType2.name === i18n.t("bank") &&
             selectedTransferType3
           ) {
             convertedValue *= selectedTransferType3.rate;
           }
           setAmount2(convertedValue.toString());
-          dispatch(setAmount1(amount)); // Dispatch amount1 to Redux
+          // dispatch(setAmount1(amount)); // Dispatch amount1 to Redux
         } else if (fromType === "amount2") {
           // Handle conversion logic for amount2
           if (
-            selectedTransferType1.name === "Bank" &&
-            selectedTransferType2.name === "Bank" &&
+            selectedTransferType1.name === i18n.t("bank") &&
+            selectedTransferType2.name === i18n.t("bank") &&
             selectedTransferType3
           ) {
             convertedValue /= selectedTransferType3.rate;
           }
           setAmount1(convertedValue.toString());
-          dispatch(setAmount2(amount)); // Dispatch amount2 to Redux
+          // dispatch(setAmount2(amount)); // Dispatch amount2 to Redux
         }
       }
     }
@@ -230,7 +233,8 @@ export default function ConvertScreen() {
       ) : null}
 
       {/* bank dropdown */}
-      {transferType2.name === "Bank" || transferType2.name === "Mobile" ? (
+      {transferType2.name === i18n.t("bank") ||
+      transferType2.name === i18n.t("mobile") ? (
         <>
           <View
             style={{
@@ -440,7 +444,7 @@ export default function ConvertScreen() {
 
               {dropdown1 && (
                 <View style={styles.dropdown}>
-                  {transferType1.name === "Crypto"
+                  {transferType1.name === i18n.t("crypto")
                     ? CryptoName.map((item) => (
                         <TouchableOpacity
                           key={item.id}
@@ -543,7 +547,7 @@ export default function ConvertScreen() {
 
               {dropdown2 && (
                 <View style={styles.dropdown}>
-                  {transferType2.name === "Crypto"
+                  {transferType2.name === i18n.t("crypto")
                     ? CryptoName.map((item) => (
                         <TouchableOpacity
                           key={item.id}
@@ -594,7 +598,7 @@ export default function ConvertScreen() {
 
       {/* end bank dropdown country */}
       <TouchableOpacity style={styles.loginButton} onPress={handleNext}>
-        <AppButton title="Next" buttonColor={Colors.primary} />
+        <AppButton title={i18n.t("next")} buttonColor={Colors.primary} />
       </TouchableOpacity>
     </View>
   );
